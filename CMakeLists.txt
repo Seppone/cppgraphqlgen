@@ -13,8 +13,6 @@ find_package(Threads MODULE REQUIRED)
 
 include(CMakePackageConfigHelpers)
 
-find_package(pegtl CONFIG REQUIRED)
-
 # Set the minimum C++ standard required for compiling,
 # but allow for user to override on the command line using:
 #     cmake -DCMAKE_CXX_STANDARD=[11|14|17|...] -DCMAKE_CXX_EXTENSIONS=[ON|OFF]
@@ -34,7 +32,7 @@ add_executable(schemagen
   GraphQLTree.cpp
   GraphQLResponse.cpp
   SchemaGenerator.cpp)
-target_link_libraries(schemagen PRIVATE taocpp::pegtl)
+target_link_libraries(schemagen PRIVATE CONAN_PKG::pegtl)
 target_include_directories(schemagen PRIVATE
   ${CMAKE_CURRENT_SOURCE_DIR}/include)
 cppgraphqlgen_target_set_cxx_standard(schemagen)
@@ -56,7 +54,7 @@ add_library(graphqlservice
   Introspection.cpp
   IntrospectionSchema.cpp)
 target_link_libraries(graphqlservice PUBLIC
-  taocpp::pegtl
+  CONAN_PKG::pegtl
   Threads::Threads)
 target_include_directories(graphqlservice PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -70,18 +68,18 @@ cppgraphqlgen_target_set_cxx_standard(graphqlservice)
 option(USE_RAPIDJSON "Use RapidJSON for JSON serialization." ON)
 
 if(USE_RAPIDJSON)
-  find_package(RapidJSON CONFIG REQUIRED)
 
   add_library(graphqljson
     JSONResponse.cpp)
   target_link_libraries(graphqljson PUBLIC
-    graphqlservice)
+    PRIVATE CONAN_PKG::rapidjson
+    PUBLIC graphqlservice)
   target_include_directories(graphqljson SYSTEM PRIVATE
     ${RAPIDJSON_INCLUDE_DIRS})
   cppgraphqlgen_target_set_cxx_standard(graphqljson)
 endif()
 
-option(BUILD_TESTS "Build the tests and sample schema library." ON)
+option(BUILD_TESTS "Build the tests and sample schema library." OFF)
 option(UPDATE_SAMPLES "Regenerate the sample schema sources whether or not we're building the tests and the sample library." ON)
 
 if(BUILD_TESTS OR UPDATE_SAMPLES)
@@ -119,14 +117,12 @@ if(BUILD_TESTS OR UPDATE_SAMPLES)
     cppgraphqlgen_target_set_cxx_standard(test_today)
 
     enable_testing()
-    find_package(GTest MODULE REQUIRED)
 
     add_executable(tests
       tests.cpp)
     target_link_libraries(tests PRIVATE
       todaygraphql
-      GTest::GTest
-      GTest::Main)
+      CONAN_PKG::googletest)
     cppgraphqlgen_target_set_cxx_standard(tests)
 
     add_test(NAME TodayServiceCase
