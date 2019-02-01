@@ -79,7 +79,7 @@ if(USE_RAPIDJSON)
   cppgraphqlgen_target_set_cxx_standard(graphqljson)
 endif()
 
-option(BUILD_TESTS "Build the tests and sample schema library." OFF)
+option(BUILD_TESTS "Build the tests and sample schema library." ON)
 option(UPDATE_SAMPLES "Regenerate the sample schema sources whether or not we're building the tests and the sample library." ON)
 
 if(BUILD_TESTS OR UPDATE_SAMPLES)
