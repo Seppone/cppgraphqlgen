@@ -4,6 +4,9 @@
 cmake_minimum_required(VERSION 3.5.1)
 project(cppgraphqlgen)
 
+include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+conan_basic_setup(TARGETS)
+
 if(WIN32)
   # Let CMake figure out the exports for the SHARED library (DLL) on Windows.
   SET(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
@@ -122,7 +125,7 @@ if(BUILD_TESTS OR UPDATE_SAMPLES)
       tests.cpp)
     target_link_libraries(tests PRIVATE
       todaygraphql
-      CONAN_PKG::googletest)
+      CONAN_PKG::gtest)
     cppgraphqlgen_target_set_cxx_standard(tests)
 
     add_test(NAME TodayServiceCase

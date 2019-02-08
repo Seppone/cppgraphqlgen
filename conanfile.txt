@@ -1,0 +1,7 @@
+[requires]
+pegtl/2.7.1@taocpp/stable
+rapidjson/1.1.0@bincrafters/stable
+gtest/1.8.1@bincrafters/stable
+
+[generators]
+cmake
