@@ -26,6 +26,8 @@ function(cppgraphqlgen_target_set_cxx_standard target)
   else()
     target_compile_features(${target} PUBLIC cxx_std_11)
   endif()
+  target_compile_options(${target} PUBLIC "$<$<CONFIG:Debug>:/MTd>")
+  target_compile_options(${target} PUBLIC "$<$<CONFIG:Release>:/MT>")
 endfunction()
 
 add_executable(schemagen
