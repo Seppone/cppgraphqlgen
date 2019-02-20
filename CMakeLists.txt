@@ -79,7 +79,7 @@ if(USE_RAPIDJSON)
   cppgraphqlgen_target_set_cxx_standard(graphqljson)
 endif()
 
-option(BUILD_TESTS "Build the tests and sample schema library." ON)
+option(BUILD_TESTS "Build the tests and sample schema library." OFF)
 option(UPDATE_SAMPLES "Regenerate the sample schema sources whether or not we're building the tests and the sample library." ON)
 
 if(BUILD_TESTS OR UPDATE_SAMPLES)
@@ -122,7 +122,7 @@ if(BUILD_TESTS OR UPDATE_SAMPLES)
       tests.cpp)
     target_link_libraries(tests PRIVATE
       todaygraphql
-      CONAN_PKG::gtest)
+      CONAN_PKG::googletest)
     cppgraphqlgen_target_set_cxx_standard(tests)
 
     add_test(NAME TodayServiceCase
